@@ -38,12 +38,28 @@ print_words() and print_top().
 """
 
 import sys
+import re
 
-# +++your code here+++
 # Define print_words(filename) and print_top(filename) functions.
 # You could write a helper utility function that reads a file
 # and builds and returns a word/count dict for it.
 # Then print_words() and print_top() can just call the utility function.
+
+def get_word_counts(filename):
+  with open(filename, 'r') as file:
+    word_count = {}
+    for word in re.split(r"[^a-zA-Z]+", file.read()):
+      word = word.lower()
+      word_count[word] = word_count.get(word, 0) + 1
+  return sorted(word_count.items(), key=lambda pair: (-pair[1],pair[0]))
+
+def print_words(filename):
+  for word, count in get_word_counts(filename):
+    print(word, count)
+
+def print_top(filename):
+  for word, count in get_word_counts(filename)[0:20]:
+    print(word, count)
 
 ###
 
